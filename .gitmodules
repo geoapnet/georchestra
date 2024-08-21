@@ -6,3 +6,12 @@
 	path = resources/static
 	url = https://github.com/georchestra/htdocs.git
 	branch = master
+[submodule "geovision-landingpage"]
+	path = geovision-landingpage
+	url = https://Mouad-Lembarek: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@github.com/geoapnet/geovision-landingpage
+[submodule "geonetwork-ui"]
+	path = geonetwork-ui
+	url = https://github.com/geonetwork/geonetwork-ui.git
+[submodule "datafeeder"]
+	path = datafeeder
+	url = https://github.com/georchestra/geonetwork-ui.git
