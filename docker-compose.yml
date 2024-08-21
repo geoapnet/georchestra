@@ -54,7 +54,7 @@ services:
     volumes:
       - postgresql_data:/var/lib/postgresql/data
     restart: always
-
+ 
   ldap:
     image: georchestra/ldap:24.0.x
     depends_on:
@@ -135,7 +135,7 @@ services:
       - XMX=512M
     env_file:
       - .envs-common
-    restart: always
+    restart: always 
 
   geoserver:
     image: georchestra/geoserver:24.0.x
@@ -220,9 +220,14 @@ services:
       - .envs-hosts
       - .envs-database-georchestra
     restart: always
-
+    ports:
+      - "2224:80"
+      
   datahub:
     image: geonetwork/geonetwork-ui-datahub:latest
+#    build:
+#      context: ./geonetwork-ui
+#      dockerfile: Dockerfile
     healthcheck:
       test: ["CMD-SHELL", "curl -s -f http://localhost:80/datahub/ >/dev/null || exit 1"]
       interval: 30s
@@ -297,6 +302,35 @@ services:
     volumes:
       - datafeeder_postgis_data:/var/lib/postgresql/data
     restart: always
+
+  datafeeder-frontend:
+    image: georchestra/datafeeder-frontend:24.0.x
+    healthcheck:
+      test: ["CMD-SHELL", "curl -s -f http://localhost:8080/datafeeder >/dev/null || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 10
+    depends_on:
+      database:
+        condition: service_healthy
+      postgis:
+        condition: service_healthy
+    volumes:
+      - georchestra_datadir:/etc/georchestra
+      - datafeeder_uploads:/tmp/datafeeder
+    environment:
+      - JAVA_OPTS=-Xms512m -Xmx512m
+      # You can set a higher loglevel this way: (ref. https://docs.spring.io/spring-boot/docs/2.1.13.RELEASE/reference/html/boot-features-logging.html#boot-features-custom-log-levels)
+      - LOGGING_LEVEL_ORG_GEORCHESTRA_DATAFEEDER=INFO
+    env_file:
+      - .envs-common
+      - .envs-hosts
+      - .envs-database-georchestra
+      - .envs-database-datafeeder
+    restart: always
+    ports:
+      - "8765:80"
+
 
   datafeeder:
     image: georchestra/datafeeder:24.0.x
@@ -412,3 +446,7 @@ services:
     restart: always
 
 
+
+
+fjdjdkkxklzlx,xk,,,coo,cckppdoxmx
+xkc
